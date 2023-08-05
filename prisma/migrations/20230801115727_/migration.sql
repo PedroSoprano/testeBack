@@ -1,0 +1,42 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- CreateTable
+CREATE TABLE [dbo].[User] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [name] NVARCHAR(1000) NOT NULL,
+    [login] NVARCHAR(1000) NOT NULL,
+    [password] NVARCHAR(1000) NOT NULL,
+    [createdAt] DATETIMEOFFSET NOT NULL CONSTRAINT [User_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    [updatedAt] DATETIMEOFFSET,
+    CONSTRAINT [User_pkey] PRIMARY KEY CLUSTERED ([id]),
+    CONSTRAINT [User_id_key] UNIQUE NONCLUSTERED ([id]),
+    CONSTRAINT [User_login_key] UNIQUE NONCLUSTERED ([login])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[Books] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [name] NVARCHAR(1000) NOT NULL,
+    [author] NVARCHAR(1000) NOT NULL,
+    [publishing] NVARCHAR(1000) NOT NULL,
+    [createdAt] DATETIMEOFFSET NOT NULL CONSTRAINT [Books_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    [updatedAt] DATETIMEOFFSET,
+    CONSTRAINT [Books_pkey] PRIMARY KEY CLUSTERED ([id]),
+    CONSTRAINT [Books_id_key] UNIQUE NONCLUSTERED ([id]),
+    CONSTRAINT [Books_name_key] UNIQUE NONCLUSTERED ([name])
+);
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH

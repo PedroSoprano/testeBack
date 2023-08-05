@@ -1,0 +1,27 @@
+datasource db {
+    provider = "sqlserver"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider      = "prisma-client-js"
+    binaryTargets = ["native"]
+}
+
+model User {
+    id        String    @id @unique @default(uuid())
+    name      String
+    login     String    @unique
+    password  String
+    createdAt DateTime  @default(now()) @db.DateTimeOffset
+    updatedAt DateTime? @updatedAt @db.DateTimeOffset
+}
+
+model Books {
+    id         String    @id @unique @default(uuid())
+    name       String    @unique
+    author     String
+    publishing String
+    createdAt  DateTime  @default(now()) @db.DateTimeOffset
+    updatedAt  DateTime? @updatedAt @db.DateTimeOffset
+}
